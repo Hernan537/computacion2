@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>Top 3 Cafeterías Recomendadas</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Las mejores cafeterías de la ciudad" name="keywords">
+    <meta content="Recomendaciones de cafeterías premium con enlaces directos" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --cafe-oscuro: #6F4E37;
+            --cafe-medio: #A67C52;
+            --cafe-claro: #D2B48C;
+            --beige: #F5F5DC;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+        }
+        
+        .navbar {
+            background-color: var(--cafe-oscuro) !important;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cafe-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .cafe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .cafe-img {
+            height: 250px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .rating {
+            color: #FFD700;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .btn-visitar {
+            background-color: var(--cafe-oscuro);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-visitar:hover {
+            background-color: var(--cafe-medio);
+            transform: scale(1.05);
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        
+        footer {
+            background-color: var(--cafe-oscuro);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .social-icon {
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            color: var(--cafe-claro);
+            transform: scale(1.2);
+        }
+        
+        /* Estilos para el botón de confeti */
+        .confetti-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: var(--cafe-medio);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .confetti-btn:hover {
+            background-color: var(--cafe-oscuro);
+            transform: scale(1.1);
+        }
+        
+        /* Estilos para la sección de video */
+        .video-section {
+            background-color: var(--beige);
+            padding: 80px 0;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Estilo para el modal de redirección */
+        .redirect-modal {
+            background-color: rgba(0,0,0,0.8);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .redirect-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .redirect-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .redirect-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .redirect-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .redirect-btn-primary {
+            background-color: var(--cafe-oscuro);
+            color: white;
+            border: none;
+        }
+        
+        .redirect-btn-primary:hover {
+            background-color: var(--cafe-medio);
+        }
+        
+        .redirect-btn-secondary {
+            background-color: transparent;
+            color: var(--cafe-oscuro);
+            border: 2px solid var(--cafe-oscuro);
+        }
+        
+        .redirect-btn-secondary:hover {
+            background-color: #f5f5f5;
+        }
+        
+        /* Estilos para el botón de reproducción personalizado */
+        .play-button-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(111, 78, 55, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .play-button:hover {
+            background-color: rgba(111, 78, 55, 1);
+            transform: scale(1.1);
+        }
+        
+        .play-button i {
+            color: white;
+            font-size: 30px;
+            margin-left: 5px;
+        }
+        
+        .video-thumbnail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+        
+        .video-wrapper {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <h2 class="m-0"><i class="fas fa-coffee me-2"></i>CAFÉ RECOMENDADO</h2>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#recomendaciones">Recomendaciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#video">Video</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonios">Testimonios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contacto">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-4">Las 3 Mejores Cafeterías</h1>
+            <p class="lead mb-5">Descubre nuestras recomendaciones premium con enlaces directos a sus sitios oficiales</p>
+            <a href="#recomendaciones" class="btn btn-lg btn-outline-light">Ver Recomendaciones</a>
+        </div>
+    </section>
+
+    <!-- Recomendaciones Section -->
+    <section id="recomendaciones" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Nuestras Recomendaciones</h2>
+                <p class="lead text-muted">Seleccionadas por calidad, servicio y experiencia del cliente</p>
+            </div>
+            
+            <div class="row">
+                <!-- Starbucks -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="cafe-card">
+                        <img src="https://images.unsplash.com/photo-1568649929103-28ffbefaca1e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Starbucks" class="cafe-img">
+                        <div class="p-4">
+                            <h3 class="fw-bold mb-3">Starbucks</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="ms-2">4.5/5</span>
+                            </div>
+                            <p class="text-muted mb-4">Otra sucursal de Starbucks con excelentes reseñas y servicio. Conoce su amplia variedad de bebidas y snacks.</p>
+                            <a href="https://www.starbucks.com.mx/" target="_blank" class="btn btn-visitar" data-external-link="https://www.starbucks.com.mx/">
+                                Visitar Sitio <i class="fas fa-external-link-alt ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Café Emir -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="cafe-card">
+                        <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Café Emir" class="cafe-img">
+                        <div class="p-4">
+                            <h3 class="fw-bold mb-3">Café Emir</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="ms-2">5/5</span>
+                            </div>
+                            <p class="text-muted mb-4">Una opción local con una calificación sobresaliente en plataformas de entrega. Café de especialidad tostado artesanalmente.</p>
+                            <a href="https://www.emircafe.mx/" target="_blank" class="btn btn-visitar" data-external-link="https://www.emircafe.mx/">
+                                Visitar Sitio <i class="fas fa-external-link-alt ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cielito Querido -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="cafe-card">
+                        <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Cielito Querido" class="cafe-img">
+                        <div class="p-4">
+                            <h3 class="fw-bold mb-3">Cielito Querido</h3>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span class="ms-2">4/5</span>
+                            </div>
+                            <p class="text-muted mb-4">Un lugar acogedor con una calificación perfecta en redes sociales. Disfruta de su ambiente único y deliciosas variedades.</p>
+                            <a href="https://cielitoquerido.com.mx/" target="_blank" class="btn btn-visitar" data-external-link="https://cielitoquerido.com.mx/">
+                                Visitar Sitio <i class="fas fa-external-link-alt ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section id="video" class="video-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">El Arte del Café</h2>
+                <p class="lead text-muted">Descubre el proceso detrás de una taza de café perfecta</p>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="video-wrapper">
+                        <!-- Contenedor del video con botón de reproducción personalizado -->
+                        <div class="video-container" id="youtubeVideoContainer">
+                            <img src="https://img.youtube.com/vi/bCEeeyqVvCQ/maxresdefault.jpg" alt="Miniatura del video" class="video-thumbnail">
+                            <div class="play-button-container" id="playButton">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios Section -->
+    <section id="testimonios" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Lo Que Dicen Nuestros Clientes</h2>
+                <p class="lead text-muted">Experiencias reales en estas cafeterías</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Cliente" class="rounded-circle me-3" width="60">
+                            <div>
+                                <h5 class="mb-0">María Rodríguez</h5>
+                                <small class="text-muted">Amante del café</small>
+                            </div>
+                        </div>
+                        <p class="mb-0">"Starbucks nunca decepciona. Su servicio consistente y ambiente acogedor lo hacen mi elección segura cuando necesito trabajar fuera de casa."</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Cliente" class="rounded-circle me-3" width="60">
+                            <div>
+                                <h5 class="mb-0">Carlos Méndez</h5>
+                                <small class="text-muted">Crítico gastronómico</small>
+                            </div>
+                        </div>
+                        <p class="mb-0">"Café Emir tiene los granos más frescos de la ciudad. Su proceso de tostado artesanal hace una diferencia notable en cada taza."</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Cliente" class="rounded-circle me-3" width="60">
+                            <div>
+                                <h5 class="mb-0">Ana García</h5>
+                                <small class="text-muted">Bloguera de café</small>
+                            </div>
+                        </div>
+                        <p class="mb-0">"Cielito Querido tiene el mejor balance entre calidad y precio. Sus bebidas tradicionales mexicanas son simplemente irresistibles."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto Section -->
+    <section id="contacto" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="display-5 fw-bold mb-4">¿Tienes alguna recomendación?</h2>
+                    <p class="lead mb-4">Nos encantaría conocer tu cafetería favorita para considerarla en nuestras próximas evaluaciones.</p>
+                    <div class="d-flex">
+                        <a href="#" class="social-icon me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                    <div class="mt-4">
+                        <p><i class="fas fa-user-graduate me-2"></i> Hernan Apolinar Flores</p>
+                        <p><i class="fas fa-id-card me-2"></i> Matrícula: 19-002-0056</p>
+                        <p><i class="fas fa-chalkboard-teacher me-2"></i> Profesor: Armando Valera Paulino (Computación 2)</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <form>
+                        <div class="mb-3">
+                            <input type="text" class="form-control py-3" placeholder="Tu nombre">
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control py-3" placeholder="Tu email">
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control py-3" rows="3" placeholder="Tu recomendación"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-visitar w-100">Enviar Recomendación</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h4 class="mb-4">CAFÉ RECOMENDADO</h4>
+                    <p>Descubre las mejores experiencias cafetaleras en la ciudad con nuestras recomendaciones verificadas.</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h4 class="mb-4">Enlaces Rápidos</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Inicio</a></li>
+                        <li class="mb-2"><a href="#recomendaciones" class="text-white text-decoration-none">Recomendaciones</a></li>
+                        <li class="mb-2"><a href="#video" class="text-white text-decoration-none">Video</a></li>
+                        <li class="mb-2"><a href="#testimonios" class="text-white text-decoration-none">Testimonios</a></li>
+                        <li><a href="#contacto" class="text-white text-decoration-none">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="mb-4">Contacto</h4>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> 
+                        <a href="https://www.google.com/maps/place/19°19'53.2\"N+98°58'11.2\"W/@19.331435,-98.969788,15z/data=!4m4!3m3!8m2!3d19.331435!4d-98.969788" 
+                           target="_blank" 
+                           class="text-white text-decoration-none"
+                           data-external-link="https://www.google.com/maps/place/19°19'53.2\"N+98°58'11.2\"W/@19.331435,-98.969788,15z/data=!4m4!3m3!8m2!3d19.331435!4d-98.969788">
+                            ubicación
+                       <p>
+                        </a>
+                                                <a href="https://www.facebook.com/hernan.apolinar.2025" target="_blank" class="social-icon me-3" data-external-link="https://www.facebook.com/hernan.apolinar.2025">
+                            <i class="fab fa-facebook-f"></i> facebook <!-- Texto en minúsculas -->
+</a>
+                        </a>
+                        </p>
+                    </p>
+                    <p><i class="fab fa-whatsapp me-2"></i> 
+                        <a href="https://wa.me/525611370132" 
+                           target="_blank" 
+                           class="text-white text-decoration-none"
+                           data-external-link="https://wa.me/525611370132">
+                            +52 56 1137 0132
+                        </a>
+                    </p>
+                    <p><i class="fas fa-envelope me-2"></i> 
+                        <a href="mailto:hernan.apolinar.flores@estudiante.uacm.edu.mx" 
+                           class="text-white text-decoration-none">
+                            hernan.apolinar.flores@estudiante.uacm.edu.mx
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Café Recomendado. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botón para activar el confeti -->
+    <button class="confetti-btn" id="confettiBtn" title="¡Celebra con confeti!">
+        <i class="fas fa-mug-hot"></i>
+    </button>
+
+    <!-- Modal para redirección -->
+    <div class="redirect-modal" id="redirectModal">
+        <div class="redirect-content">
+            <h3 class="mb-4">Estás saliendo de nuestro sitio</h3>
+            <p>Estás a punto de visitar un sitio web externo. ¿Deseas continuar?</p>
+            <div class="redirect-buttons">
+                <button class="redirect-btn redirect-btn-primary" id="confirmRedirect">Continuar</button>
+                <button class="redirect-btn redirect-btn-secondary" id="cancelRedirect">Cancelar</button>
+            </div>
+            <div class="mt-4">
+                <label class="d-flex align-items-center justify-content-center">
+                    <input type="checkbox" id="rememberChoice" class="me-2">
+                    <span>Recordar mi elección</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Biblioteca para el confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        // Función para lanzar confeti
+        function launchConfetti() {
+            // Configuración del confeti con colores que combinan con el tema café
+            const colors = ['#6F4E37', '#A67C52', '#D2B48C', '#F5F5DC', '#FFD700'];
+            
+            confetti({
+                particleCount: 150,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: colors
+            });
+            
+            confetti({
+                particleCount: 150,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: colors
+            });
+            
+            // Confeti adicional para mejor efecto
+            setTimeout(() => {
+                confetti({
+                    particleCount: 50,
+                    spread: 100,
+                    origin: { y: 0.6 }
+                });
+            }, 250);
+        }
+        
+        // Evento al hacer clic en el botón de confeti
+        document.getElementById('confettiBtn').addEventListener('click', launchConfetti);
+        
+        // También lanzar confeti al cargar la página (opcional)
+        window.addEventListener('load', function() {
+            setTimeout(launchConfetti, 1000);
+        });
+        
+        // Lanzar confeti al hacer clic en los botones "Visitar Sitio"
+        document.querySelectorAll('.btn-visitar').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Solo lanzar confeti si no es el último botón (para evitar confeti al enviar formulario)
+                if (!this.closest('form')) {
+                    launchConfetti();
+                }
+            });
+        });
+        
+        // Sistema de redirección con confirmación
+        document.addEventListener('DOMContentLoaded', function() {
+            const redirectModal = document.getElementById('redirectModal');
+            const confirmRedirect = document.getElementById('confirmRedirect');
+            const cancelRedirect = document.getElementById('cancelRedirect');
+            const rememberChoice = document.getElementById('rememberChoice');
+            
+            let targetUrl = '';
+            let remember = false;
+            
+            // Verificar si hay una preferencia guardada
+            if (localStorage.getItem('rememberRedirectChoice') === 'true') {
+                remember = true;
+                rememberChoice.checked = true;
+            }
+            
+            // Manejar clic en enlaces externos
+            document.querySelectorAll('[data-external-link]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Si el usuario eligió recordar y confirmó antes, redirigir directamente
+                    if (remember && localStorage.getItem('autoRedirect') === 'true') {
+                        return; // Permitir el comportamiento normal del enlace
+                    }
+                    
+                    e.preventDefault();
+                    targetUrl = this.getAttribute('data-external-link');
+                    redirectModal.classList.add('show');
+                });
+            });
+            
+            // Confirmar redirección
+            confirmRedirect.addEventListener('click', function() {
+                if (rememberChoice.checked) {
+                    localStorage.setItem('rememberRedirectChoice', 'true');
+                    localStorage.setItem('autoRedirect', 'true');
+                }
+                redirectModal.classList.remove('show');
+                window.open(targetUrl, '_blank');
+            });
+            
+            // Cancelar redirección
+            cancelRedirect.addEventListener('click', function() {
+                if (rememberChoice.checked) {
+                    localStorage.setItem('rememberRedirectChoice', 'true');
+                    localStorage.setItem('autoRedirect', 'false');
+                }
+                redirectModal.classList.remove('show');
+            });
+            
+            // Cerrar modal al hacer clic fuera del contenido
+            redirectModal.addEventListener('click', function(e) {
+                if (e.target === redirectModal) {
+                    redirectModal.classList.remove('show');
+                }
+            });
+            
+            // Cargar el video de YouTube cuando se hace clic en el botón de reproducción
+            const playButton = document.getElementById('playButton');
+            const videoContainer = document.getElementById('youtubeVideoContainer');
+            
+            playButton.addEventListener('click', function() {
+                // Crear el iframe del video
+                const iframe = document.createElement('iframe');
+                iframe.setAttribute('src', 'https://www.youtube.com/embed/bCEeeyqVvCQ?autoplay=1&rel=0');
+                iframe.setAttribute('frameborder', '0');
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                iframe.setAttribute('allowfullscreen', '');
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                iframe.style.position = 'absolute';
+                iframe.style.top = '0';
+                iframe.style.left = '0';
+                
+                // Limpiar el contenedor y agregar el iframe
+                videoContainer.innerHTML = '';
+                videoContainer.appendChild(iframe);
+                
+                // Lanzar confeti para celebrar el inicio del video
+                launchConfetti();
+            });
+        });
+    </script>
+</body>
+</html>
